@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Lewis Advising</string>
+
+    <string-array name="Concentration">
+        <item>Cyber Security Track</item>
+        <item>Enterprise &amp; Cloud Computing</item>
+        <item>Digital Forensics</item>
+        <item>Software Engineering</item>
+        <item>Artificial Intelligence</item>
+        <item>Game Programming</item>
+        <item>Data Science</item>
+    </string-array>
+</resources>

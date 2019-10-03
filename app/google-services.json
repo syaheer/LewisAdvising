@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "579091400495",
+    "firebase_url": "https://studentadvising-cf4a5.firebaseio.com",
+    "project_id": "studentadvising-cf4a5",
+    "storage_bucket": "studentadvising-cf4a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579091400495:android:f6026264997c58d4b843da",
+        "android_client_info": {
+          "package_name": "com.groupb.lewisadvising"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579091400495-teha4a1tm8qfs22pois145k9a4saupql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.groupb.lewisadvising",
+            "certificate_hash": "6ed4181bdfa6967c07c4e8ecbc1716163404021b"
+          }
+        },
+        {
+          "client_id": "579091400495-g3jhhecevfn7tcl0rp2632bnu0sjsu8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkBOgbEfb1BalHLDtp37A6L-R6yTFHdeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579091400495-g3jhhecevfn7tcl0rp2632bnu0sjsu8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
