@@ -1,15 +1,22 @@
 package com.groupb.lewisadvising;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Spinner;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String startingTermString;
     private List<String> terms = new ArrayList<>();
     private FirebaseFirestore db;
+    private LinearLayout dynamicLayout;
 
     private LinkedHashMap<String, List<String>> courses = new LinkedHashMap<>();
 
@@ -38,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        dynamicLayout = findViewById(R.id.dynamicLayout);
 
         terms.add("Fall 1-2019");
         terms.add("Fall 2-2019");
@@ -69,6 +78,9 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             getData();
+        } else {
+            startActivity(new Intent(ProfileActivity.this, MainActivity.class)); //Go back to home page
+            finish();
         }
     }
 
@@ -124,6 +136,12 @@ public class ProfileActivity extends AppCompatActivity {
         for (int i = 0; i < numberOfTerms; i++) {
             final int currIndex = i + startingIndex;
             Log.d("currIndex", currIndex + " " + terms.get(currIndex));
+            final LayoutInflater inflater = getLayoutInflater();
+            final View termView = inflater.inflate(R.layout.item_terms, null);
+            TextView termTv = termView.findViewById(R.id.term);
+            termTv.setText(terms.get(currIndex));
+            ViewGroup main = findViewById(R.id.dynamicLayout);
+            main.addView(termView, currIndex);
             // Courses
             final List<String> coursesList = new ArrayList<>();
             db.collection("concentration").document(concentrationString).collection("startingTerm").document(startingTermString).collection(terms.get(currIndex))
@@ -136,13 +154,35 @@ public class ProfileActivity extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     coursesList.add(document.getId());
                                     Log.d("adding", document.getId());
+                                    View view = inflater.inflate(R.layout.item_courses, null);
+                                    TextView termTv = view.findViewById(R.id.course);
+                                    termTv.setText(document.getId());
+                                    ViewGroup main = termView.findViewById(R.id.coursesList);
+                                    main.addView(view, 0);
                                 }
-                                courses.put(terms.get(currIndex), coursesList);
-                                Log.d("asd", courses.toString());
+
                             }
                         }
                     });
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(ProfileActivity.this, MainActivity.class)); //Go back to home page
+                finish();
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }
