@@ -143,7 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
             ViewGroup main = findViewById(R.id.dynamicLayout);
             main.addView(termView, currIndex);
             // Courses
-            final List<String> coursesList = new ArrayList<>();
             db.collection("concentration").document(concentrationString).collection("startingTerm").document(startingTermString).collection(terms.get(currIndex))
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -151,14 +150,28 @@ public class ProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 //terms.clear();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    coursesList.add(document.getId());
-                                    Log.d("adding", document.getId());
-                                    View view = inflater.inflate(R.layout.item_courses, null);
-                                    TextView termTv = view.findViewById(R.id.course);
-                                    termTv.setText(document.getId());
-                                    ViewGroup main = termView.findViewById(R.id.coursesList);
-                                    main.addView(view, 0);
+                                for (final QueryDocumentSnapshot document : task.getResult()) {
+                                    final String termId = document.getId();
+                                    db.collection("courses").document(termId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("adding", termId);
+                                                        View view = inflater.inflate(R.layout.item_courses, null);
+                                                        TextView termTv = view.findViewById(R.id.course);
+                                                        if (task.getResult().get("name") != null)
+                                                            termTv.setText(termId + " " + task.getResult().get("name"));
+                                                        else
+                                                            termTv.setText(termId);
+                                                        ViewGroup main = termView.findViewById(R.id.coursesList);
+                                                        main.addView(view, 0);
+                                                    }
+                                                }
+                                            });
+
+
                                 }
 
                             }
