@@ -70,4 +70,12 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
+    <TextView
+        android:id="@+id/forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
+
 </LinearLayout>
