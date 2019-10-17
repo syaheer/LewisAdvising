@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
             TextView termTv = termView.findViewById(R.id.term);
             termTv.setText(terms.get(currIndex));
             ViewGroup main = findViewById(R.id.dynamicLayout);
-            main.addView(termView, currIndex);
+            main.addView(termView, i);
             // Courses
             db.collection("concentration").document(concentrationString).collection("startingTerm").document(startingTermString).collection(terms.get(currIndex))
                     .get()
